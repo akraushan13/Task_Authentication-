@@ -28,7 +28,7 @@ class DoctorDashBoard(UserPassesTestMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["object_list"] = Post.objects.all().filter(
-            written_by=self.request.user, draft=False
+            written_by=self.request.user, draft=True
         )
         return context
 
@@ -39,7 +39,7 @@ class DoctorDashBoard(UserPassesTestMixin, TemplateView):
 class PostsView(UserPassesTestMixin, ListView):
     model = Post
     template_name = "patient_dash.html"
-    queryset = Post.objects.filter(draft=False).order_by("category")
+    queryset = Post.objects.filter(draft=True).order_by("category")
 
     def test_func(self):
         return self.request.user.is_patient
